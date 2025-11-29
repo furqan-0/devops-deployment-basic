@@ -1,1 +1,4 @@
 node_modules/
+# git remote set-url origin urls (in case of need to changes origin or repo)
+
+.env
