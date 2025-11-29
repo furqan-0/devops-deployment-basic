@@ -6,7 +6,6 @@ import './App.css';
 function App() {
   const [count, setCount] = useState(0);
   let name = 'unused variable';
-  console.log(name);
 
   return (
     <>
