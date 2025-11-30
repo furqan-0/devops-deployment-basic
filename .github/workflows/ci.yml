@@ -65,8 +65,8 @@ jobs:
       
       - name: Write SSH key
         run: |
-          echo "${EC2_KEY}" > ec2_key.pem
-          chmod 600 ec2_key.pem
+          echo "${EC2_KEY}" > keypair1.pem
+          chmod 600 keypair1.pem
         env:
           EC2_HOST: ${{ secrets.EC2_KEY }}
       
@@ -79,7 +79,7 @@ jobs:
         run: |
           # Use shell variables ($EC2_USER, $EC2_HOST)
           # Note: The EOF block uses single quotes (below) to prevent local shell expansion
-          ssh -i ec2_key.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
+          ssh -i keypair1.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
             set -e
             
             # Use shell variables again ($EC2_APP_DIR)
