@@ -65,26 +65,20 @@ jobs:
       
       - name: Write SSH key
         run: |
-          echo "${EC2_KEY}" > keypair1.pem
-          chmod 600 keypair1.pem
+          echo "${EC2_KEY}" > ec2_key.pem
+          chmod 600 ec2_key.pem
         env:
           EC2_HOST: ${{ secrets.EC2_KEY }}
       
       - name: Deploy on EC2 (git pull + docker compose up -d --build)
         env:
-          # These are correctly defined, setting shell variables: $EC2_HOST, $EC2_USER, etc.
           EC2_HOST: ${{ secrets.EC2_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_APP_DIR: ${{ secrets.EC2_APP_DIR }}
         run: |
-          # Use shell variables ($EC2_USER, $EC2_HOST)
-          # Note: The EOF block uses single quotes (below) to prevent local shell expansion
-          ssh -i keypair1.pem ${EC2_USER}@${EC2_HOST} << 'EOF'
+          ssh -i ec2_key.pem ${secrets.EC2_USER}@${secrets.EC2_HOST} << EOF
             set -e
-            
-            # Use shell variables again ($EC2_APP_DIR)
-            # Ensure the directory path is within double quotes
-            cd "${EC2_APP_DIR}"
+            cd "${secrets.EC2_APP_DIR}"
 
             git fetch -all
             git reset --hard origin/main
